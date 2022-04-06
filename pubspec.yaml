@@ -1,0 +1,29 @@
+name: loading_recorder_app
+description: Flutter application for creating pdf files from captured images
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  path_provider: ^2.0.1
+  pdf: ^3.3.0
+  syncfusion_flutter_pdfviewer: ^19.1.64-beta
+  image_picker: ^0.7.0-nullsafety
+  shared_preferences: ^2.0.13
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+
