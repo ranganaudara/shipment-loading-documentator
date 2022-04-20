@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../util/sizes_helper.dart';
 import '../widgets/card.dart';
+import 'create_pdf_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,6 +14,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final dateInputController = TextEditingController();
+  final vehicleIdController = TextEditingController();
+
   String image1 = "";
   String image2 = "";
   String image3 = "";
@@ -20,8 +25,20 @@ class _HomeScreenState extends State<HomeScreen> {
   String image6 = "";
   String image7 = "";
 
-  bool isAllAvailable = true;
+  bool isAllAvailable = false;
 
+  @override
+  void initState() {
+    dateInputController.text = ""; //set the initial value of text field
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    vehicleIdController.dispose();
+    dateInputController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +47,69 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
-              height: displayHeight(context) * 0.03
-            ),
-            Image(image: AssetImage('assets/images/mas_logo.png'), height: displayHeight(context) * 0.07),
-            SizedBox(
-                height: displayHeight(context) * 0.02
-            ),
+            SizedBox(height: displayHeight(context) * 0.03),
+            Image(
+                image: AssetImage('assets/images/mas_logo.png'),
+                height: displayHeight(context) * 0.07),
+            SizedBox(height: displayHeight(context) * 0.02),
             Text(
               "Shipment Loading Documentator",
-              style: TextStyle(fontSize: displayHeight(context) * 0.03, fontWeight: FontWeight.w400),
+              style: TextStyle(
+                  fontSize: displayHeight(context) * 0.03,
+                  fontWeight: FontWeight.w400),
             ),
             SizedBox(
               height: displayHeight(context) * 0.01,
             ),
+            Row(mainAxisSize: MainAxisSize.min, children: [
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: TextField(
+                  controller: dateInputController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    constraints:
+                        BoxConstraints(maxWidth: displayWidth(context) * 0.2),
+                    labelText: "Date",
+                    hintText: 'Enter the Date',
+                  ),
+                  readOnly: true,
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2101));
+
+                    if (pickedDate != null) {
+                      String formattedDate =
+                          DateFormat('yyyy-MM-dd').format(pickedDate);
+
+                      setState(() {
+                        dateInputController.text =
+                            formattedDate; //set output date to TextField value.
+                      });
+                    } else {
+                      print("Date is not selected");
+                    }
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: TextField(
+                  controller: vehicleIdController,
+                  decoration: InputDecoration(
+                    constraints:
+                        BoxConstraints(maxWidth: displayWidth(context) * 0.2),
+                    border: OutlineInputBorder(),
+                    labelText: 'Vehicle Number',
+                    hintText: 'Enter the Vehicle Number',
+                  ),
+
+                ),
+              ),
+            ]),
             Expanded(
               child: GridView.count(
                 primary: false,
@@ -72,7 +138,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 primary: Colors.red, // background
                 onPrimary: Colors.white, // foreground
               ),
-              onPressed: _generateReport,
+              onPressed: () async {
+                await _generateReport();
+              },
               child: const Text('Generate Report'),
             ),
             const SizedBox(
@@ -86,7 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _generateReport() async {
     await _getImagePaths();
-    if(isAllAvailable){
+    await _saveInfo();
+    if (isAllAvailable) {
       print(image1.toString());
       print(image2.toString());
       print(image3.toString());
@@ -94,6 +163,11 @@ class _HomeScreenState extends State<HomeScreen> {
       print(image5.toString());
       print(image6.toString());
       print(image7.toString());
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const PdfScreen()),
+      );
     } else {
       print("Images are empty!!");
       showDialog(
@@ -124,9 +198,28 @@ class _HomeScreenState extends State<HomeScreen> {
         image5 = prefs.getString("STEP 5")!;
         image6 = prefs.getString("STEP 6")!;
         image7 = prefs.getString("STEP 7")!;
-      } catch(e){
+        _isAvailable();
+      } catch (e) {
         isAllAvailable = false;
       }
     });
+  }
+
+  _isAvailable() {
+    if (image1.length > 1 &&
+        image2.length > 1 &&
+        image3.length > 1 &&
+        image4.length > 1 &&
+        image5.length > 1 &&
+        image6.length > 1 &&
+        image7.length > 1) {
+      isAllAvailable = true;
+    }
+  }
+  
+  _saveInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("Date", dateInputController.text);
+    prefs.setString("Vehicle", vehicleIdController.text);
   }
 }
