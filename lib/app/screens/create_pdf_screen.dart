@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -97,7 +98,7 @@ class _PdfScreenState extends State<PdfScreen> {
                       pw.Expanded(
                         child: pw.Column(
                             mainAxisAlignment:
-                                pw.MainAxisAlignment.spaceBetween,
+                            pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 1", textAlign: pw.TextAlign.center),
                               pw.Image(image1),
@@ -111,7 +112,7 @@ class _PdfScreenState extends State<PdfScreen> {
                       pw.Expanded(
                         child: pw.Column(
                             mainAxisAlignment:
-                                pw.MainAxisAlignment.spaceBetween,
+                            pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 2", textAlign: pw.TextAlign.center),
                               pw.Image(image2),
@@ -125,7 +126,7 @@ class _PdfScreenState extends State<PdfScreen> {
                       pw.Expanded(
                         child: pw.Column(
                             mainAxisAlignment:
-                                pw.MainAxisAlignment.spaceBetween,
+                            pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 3", textAlign: pw.TextAlign.center),
                               pw.Image(image3),
@@ -141,7 +142,7 @@ class _PdfScreenState extends State<PdfScreen> {
                       pw.Expanded(
                         child: pw.Column(
                             mainAxisAlignment:
-                                pw.MainAxisAlignment.spaceBetween,
+                            pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 4", textAlign: pw.TextAlign.center),
                               pw.Image(image4),
@@ -155,7 +156,7 @@ class _PdfScreenState extends State<PdfScreen> {
                       pw.Expanded(
                         child: pw.Column(
                             mainAxisAlignment:
-                                pw.MainAxisAlignment.spaceBetween,
+                            pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 5", textAlign: pw.TextAlign.center),
                               pw.Image(image5),
@@ -169,7 +170,7 @@ class _PdfScreenState extends State<PdfScreen> {
                       pw.Expanded(
                         child: pw.Column(
                             mainAxisAlignment:
-                                pw.MainAxisAlignment.spaceBetween,
+                            pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 6", textAlign: pw.TextAlign.center),
                               pw.Image(image6),
@@ -185,7 +186,7 @@ class _PdfScreenState extends State<PdfScreen> {
                       pw.Expanded(
                         child: pw.Column(
                             mainAxisAlignment:
-                                pw.MainAxisAlignment.spaceBetween,
+                            pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 7", textAlign: pw.TextAlign.center),
                               pw.Image(image7),
@@ -202,21 +203,89 @@ class _PdfScreenState extends State<PdfScreen> {
           ];
         }));
   }
+  /*Future<bool>savefile()async{
+    Directory directory;
+    if(Platform.isAndroid){
+      if(await _requestPermission(Permission.storage)){
+        directory = (await getExternalStorageDirectories()) as Directory;
+        print(directory);
+      }
+      else{
+        return false;
+      }
+    }
+  }*/
+
+  Future<bool>_requestPermission(Permission permission)async{
+    if(await permission.isGranted){
+      return true;
+    }else{
+      var result = await permission.request();
+      if(result == PermissionStatus.granted){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }
+
+  /*savePdfFile() async {
+    Directory documentDirectory;
+    String documentPath;
+    if(Platform.isAndroid){
+      if(await _requestPermission(Permission.storage)){
+        documentDirectory = (await getExternalStorageDirectories()) as Directory;
+        documentPath = documentDirectory.path;
+        print(documentPath);
+        String id = DateTime.now().toString();
+
+        File file = File("$documentPath/$id.pdf");
+        file.writeAsBytesSync(await pdf.save());
+        setState(() {
+          pdfFile = file.path;
+          pdf = pw.Document();
+        });
+      }
+      else{
+        return false;
+      }
+    }
+    // await preferences.clear();
+  }*/
 
   savePdfFile() async {
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String documentPath = documentDirectory.path;
-    print(documentPath);
+    if(await _requestPermission(Permission.storage)){
+      Directory? documentDirectory = await getExternalStorageDirectory();
+      print(documentDirectory!.path);
+      String documentPath = "";
+      String newPath ="";
+      List<String>folders = documentDirectory.path.split("/");
+      for(int x = 1;x<folders.length;x++){
+        String folder = folders[x];
+        if(folder != "Android"){
+          newPath+= "/"+folder;
+        }else{
+          break;
+        }
+      }
+      newPath = newPath+"/MAS";
+      documentDirectory = Directory(newPath);
+      if((!await documentDirectory.exists())){
+        await documentDirectory.create(recursive: true);
+      }
+      documentPath= documentDirectory.path;
+      String id = DateTime.now().toString();
 
-    String id = DateTime.now().toString();
+      File file = File("$documentPath/$id.pdf");
 
-    File file = File("$documentPath/$id.pdf");
+      file.writeAsBytesSync(await pdf.save());
+      setState(() {
+        pdfFile = file.path;
+        pdf = pw.Document();
+      });
 
-    file.writeAsBytesSync(await pdf.save());
-    setState(() {
-      pdfFile = file.path;
-      pdf = pw.Document();
-    });
+    }
+
 
     // await preferences.clear();
   }
