@@ -102,8 +102,8 @@ class _PdfScreenState extends State<PdfScreen> {
                             children: [
                               pw.Text("STEP 1", textAlign: pw.TextAlign.center),
                               pw.Container(
-                                width: 150,
-                                height:300,
+                                width: 120,
+                                height:200,
                                 child:pw.Image(image1),
                               ),
                               pw.Text(
@@ -120,8 +120,8 @@ class _PdfScreenState extends State<PdfScreen> {
                             children: [
                               pw.Text("STEP 2", textAlign: pw.TextAlign.center),
                               pw.Container(
-                                width: 150,
-                                height:300,
+                                width: 120,
+                                height:200,
                                 child:pw.Image(image2),
                               ),
                               pw.Text(
@@ -138,8 +138,8 @@ class _PdfScreenState extends State<PdfScreen> {
                             children: [
                               pw.Text("STEP 3", textAlign: pw.TextAlign.center),
                               pw.Container(
-                                width: 150,
-                                height:300,
+                                width: 120,
+                                height:200,
                                 child:pw.Image(image3),
                               ),
                               pw.Text(
@@ -158,8 +158,8 @@ class _PdfScreenState extends State<PdfScreen> {
                             children: [
                               pw.Text("STEP 4", textAlign: pw.TextAlign.center),
                               pw.Container(
-                                width: 150,
-                                height:300,
+                                width: 120,
+                                height:200,
                                 child:pw.Image(image4),
                               ),
                               pw.Text(
@@ -176,8 +176,8 @@ class _PdfScreenState extends State<PdfScreen> {
                             children: [
                               pw.Text("STEP 5", textAlign: pw.TextAlign.center),
                               pw.Container(
-                                width: 150,
-                                height:300,
+                                width: 120,
+                                height:200,
                                 child:pw.Image(image5),
                               ),
                               pw.Text(
@@ -194,8 +194,8 @@ class _PdfScreenState extends State<PdfScreen> {
                             children: [
                               pw.Text("STEP 6", textAlign: pw.TextAlign.center),
                               pw.Container(
-                                width: 150,
-                                height:300,
+                                width: 120,
+                                height:200,
                                 child:pw.Image(image6),
                               ),
                               pw.Text(
@@ -214,8 +214,8 @@ class _PdfScreenState extends State<PdfScreen> {
                             children: [
                               pw.Text("STEP 7", textAlign: pw.TextAlign.center),
                               pw.Container(
-                                width: 150,
-                                height:300,
+                                width: 120,
+                                height:200,
                                 child:pw.Image(image7),
                               ),
                               pw.Text(
