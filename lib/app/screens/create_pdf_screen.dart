@@ -72,11 +72,11 @@ class _PdfScreenState extends State<PdfScreen> {
     final image6 = pw.MemoryImage(File(imagePath6).readAsBytesSync());
     final image7 = pw.MemoryImage(File(imagePath7).readAsBytesSync());
 
-    pdf.addPage(pw.MultiPage(
+    pdf.addPage(pw.Page(
         margin: const pw.EdgeInsets.all(10),
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
-          return <pw.Widget>[
+          return
             pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.center,
                 mainAxisSize: pw.MainAxisSize.min,
@@ -199,22 +199,9 @@ class _PdfScreenState extends State<PdfScreen> {
                       ),
                     ])
                   ]),
-                ]),
-          ];
+                ]);
         }));
   }
-  /*Future<bool>savefile()async{
-    Directory directory;
-    if(Platform.isAndroid){
-      if(await _requestPermission(Permission.storage)){
-        directory = (await getExternalStorageDirectories()) as Directory;
-        print(directory);
-      }
-      else{
-        return false;
-      }
-    }
-  }*/
 
   Future<bool>_requestPermission(Permission permission)async{
     if(await permission.isGranted){
@@ -229,37 +216,13 @@ class _PdfScreenState extends State<PdfScreen> {
     }
   }
 
-  /*savePdfFile() async {
-    Directory documentDirectory;
-    String documentPath;
-    if(Platform.isAndroid){
-      if(await _requestPermission(Permission.storage)){
-        documentDirectory = (await getExternalStorageDirectories()) as Directory;
-        documentPath = documentDirectory.path;
-        print(documentPath);
-        String id = DateTime.now().toString();
-
-        File file = File("$documentPath/$id.pdf");
-        file.writeAsBytesSync(await pdf.save());
-        setState(() {
-          pdfFile = file.path;
-          pdf = pw.Document();
-        });
-      }
-      else{
-        return false;
-      }
-    }
-    // await preferences.clear();
-  }*/
-
   savePdfFile() async {
-    if(await _requestPermission(Permission.storage)){
+    if(await _requestPermission(Permission.manageExternalStorage)){
       Directory? documentDirectory = await getExternalStorageDirectory();
       print(documentDirectory!.path);
       String documentPath = "";
       String newPath ="";
-      List<String>folders = documentDirectory.path.split("/");
+      /*List<String>folders = documentDirectory.path.split("/");
       for(int x = 1;x<folders.length;x++){
         String folder = folders[x];
         if(folder != "Android"){
@@ -272,7 +235,7 @@ class _PdfScreenState extends State<PdfScreen> {
       documentDirectory = Directory(newPath);
       if((!await documentDirectory.exists())){
         await documentDirectory.create(recursive: true);
-      }
+      }*/
       documentPath= documentDirectory.path;
       String id = DateTime.now().toString();
 

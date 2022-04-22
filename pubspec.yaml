@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   path_provider: ^2.0.1
+  permission_handler: ^9.2.0
   pdf: ^3.3.0
   syncfusion_flutter_pdfviewer: ^19.1.64-beta
   image_picker: ^0.7.0-nullsafety
@@ -27,4 +28,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+
+module:
+  androidX: true # Add this line.
+
 
