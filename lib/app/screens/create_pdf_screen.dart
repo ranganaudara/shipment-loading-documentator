@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -63,7 +65,7 @@ class _PdfScreenState extends State<PdfScreen> {
     );
   }
 
-  createPdfFile() {
+  createPdfFile() async {
     final image1 = pw.MemoryImage(File(imagePath1).readAsBytesSync());
     final image2 = pw.MemoryImage(File(imagePath2).readAsBytesSync());
     final image3 = pw.MemoryImage(File(imagePath3).readAsBytesSync());
@@ -71,6 +73,30 @@ class _PdfScreenState extends State<PdfScreen> {
     final image5 = pw.MemoryImage(File(imagePath5).readAsBytesSync());
     final image6 = pw.MemoryImage(File(imagePath6).readAsBytesSync());
     final image7 = pw.MemoryImage(File(imagePath7).readAsBytesSync());
+    final logoImage = pw.MemoryImage((await rootBundle.load('assets/images/mas_logo.png')).buffer.asUint8List(),);
+
+    //CARD FOR STEPS
+    stepCard(step,image,text){
+      return pw.Container(
+        width: 200,
+        margin: pw.EdgeInsets.only(bottom: 5,top: 5),
+        height: 200,
+        child: pw.Column(
+            mainAxisAlignment:
+            pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text(step, textAlign: pw.TextAlign.center),
+              pw.Expanded(
+                child:pw.Image(image),
+              ),
+              pw.Text(
+                text,
+                textAlign: pw.TextAlign.center,
+              ),
+              pw.SizedBox(height: 10),
+            ]),
+      );
+    }
 
     pdf.addPage(pw.Page(
         margin: const pw.EdgeInsets.all(10),
@@ -81,154 +107,47 @@ class _PdfScreenState extends State<PdfScreen> {
                 crossAxisAlignment: pw.CrossAxisAlignment.center,
                 mainAxisSize: pw.MainAxisSize.min,
                 children: [
+                  pw.SizedBox(height: 8),
                   pw.Text(
-                    'STEPS OF TAKING PHOTOS IN THE LOADING PROCEDURE',
+                    'STEPS OF TAKING PHOTOS IN THE LOADING\n PROCEDURE',
                     textAlign: pw.TextAlign.center,
                     style: const pw.TextStyle(fontSize: 15),
                   ),
                   pw.Divider(),
-                  pw.Row(children: [
-                    pw.Text("Date: " + date),
-                    pw.SizedBox(width: 20),
-                    pw.Text("Vehicle Number: " + vehicleNumber),
-                  ]),
+                  pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                      pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                        pw.Text("Date: " + date),
+                        pw.SizedBox(height: 2),
+                        pw.Text("Vehicle Number: " + vehicleNumber),]),
+                        pw.Container(
+                              width:100,
+                              height:50 ,
+                              child: pw.Image(logoImage),
+                            )
+                    ]),
                   pw.SizedBox(height: 10),
                   pw.Table(border: pw.TableBorder.all(), children: [
                     pw.TableRow(children: [
-                      pw.Expanded(
-                        child: pw.Column(
-                            mainAxisAlignment:
-                            pw.MainAxisAlignment.spaceEvenly,
-                            children: [
-                              pw.Text("STEP 1", textAlign: pw.TextAlign.center),
-                              pw.Container(
-                                width: 120,
-                                height:200,
-                                child:pw.Image(image1),
-                              ),
-                              pw.Text(
-                                "Lorry/Container with Vehicle/Container number",
-                                textAlign: pw.TextAlign.center,
-                              ),
-                              pw.SizedBox(height: 10),
-                            ]),
-                      ),
-                      pw.Expanded(
-                        child: pw.Column(
-                            mainAxisAlignment:
-                            pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text("STEP 2", textAlign: pw.TextAlign.center),
-                              pw.Container(
-                                width: 120,
-                                height:200,
-                                child:pw.Image(image2),
-                              ),
-                              pw.Text(
-                                "Empty lorry/container with vehicle number",
-                                textAlign: pw.TextAlign.center,
-                              ),
-                              pw.SizedBox(height: 10),
-                            ]),
-                      ),
-                      pw.Expanded(
-                        child: pw.Column(
-                            mainAxisAlignment:
-                            pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text("STEP 3", textAlign: pw.TextAlign.center),
-                              pw.Container(
-                                width: 120,
-                                height:200,
-                                child:pw.Image(image3),
-                              ),
-                              pw.Text(
-                                "Stage where half of the loading is completed",
-                                textAlign: pw.TextAlign.center,
-                              ),
-                              pw.SizedBox(height: 10),
-                            ]),
-                      ),
+                      stepCard("STEP 1",image1,"Lorry/Container with Vehicle/Container number"),
+                      stepCard("STEP 2",image2,"Empty lorry/container with vehicle number"),
+                      stepCard("STEP 3",image3,"Stage where half of the loading is completed"),
                     ]),
                     pw.TableRow(children: [
-                      pw.Expanded(
-                        child: pw.Column(
-                            mainAxisAlignment:
-                            pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text("STEP 4", textAlign: pw.TextAlign.center),
-                              pw.Container(
-                                width: 120,
-                                height:200,
-                                child:pw.Image(image4),
-                              ),
-                              pw.Text(
-                                "Stage where the loading is 100% completed",
-                                textAlign: pw.TextAlign.center,
-                              ),
-                              pw.SizedBox(height: 10),
-                            ]),
-                      ),
-                      pw.Expanded(
-                        child: pw.Column(
-                            mainAxisAlignment:
-                            pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text("STEP 5", textAlign: pw.TextAlign.center),
-                              pw.Container(
-                                width: 120,
-                                height:200,
-                                child:pw.Image(image5),
-                              ),
-                              pw.Text(
-                                "Doors are closed",
-                                textAlign: pw.TextAlign.center,
-                              ),
-                              pw.SizedBox(height: 10),
-                            ]),
-                      ),
-                      pw.Expanded(
-                        child: pw.Column(
-                            mainAxisAlignment:
-                            pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text("STEP 6", textAlign: pw.TextAlign.center),
-                              pw.Container(
-                                width: 120,
-                                height:200,
-                                child:pw.Image(image6),
-                              ),
-                              pw.Text(
-                                "Security guard is putting the ISO certified seal",
-                                textAlign: pw.TextAlign.center,
-                              ),
-                              pw.SizedBox(height: 10),
-                            ]),
-                      ),
+                      stepCard("STEP 4",image4,"Stage where the loading is 100% completed"),
+                      stepCard("STEP 5",image5,"Doors are closed"),
+                      stepCard("STEP 6",image6,"Security guard is putting the ISO certified seal"),
                     ]),
                     pw.TableRow(children: [
-                      pw.Expanded(
-                        child: pw.Column(
-                            mainAxisAlignment:
-                            pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text("STEP 7", textAlign: pw.TextAlign.center),
-                              pw.Container(
-                                width: 120,
-                                height:200,
-                                child:pw.Image(image7),
-                              ),
-                              pw.Text(
-                                "Picture of the seal with the seal number",
-                                textAlign: pw.TextAlign.center,
-                              ),
-                              pw.SizedBox(height: 10),
-                            ]),
-                      ),
+                      stepCard("STEP 7",image7,"Picture of the seal with the seal number"),
                     ])
                   ]),
                 ]);
         }));
+
   }
 
   Future<bool>_requestPermission(Permission permission)async{
