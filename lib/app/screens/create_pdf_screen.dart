@@ -98,10 +98,14 @@ class _PdfScreenState extends State<PdfScreen> {
                       pw.Expanded(
                         child: pw.Column(
                             mainAxisAlignment:
-                            pw.MainAxisAlignment.spaceBetween,
+                            pw.MainAxisAlignment.spaceEvenly,
                             children: [
                               pw.Text("STEP 1", textAlign: pw.TextAlign.center),
-                              pw.Image(image1),
+                              pw.Container(
+                                width: 150,
+                                height:300,
+                                child:pw.Image(image1),
+                              ),
                               pw.Text(
                                 "Lorry/Container with Vehicle/Container number",
                                 textAlign: pw.TextAlign.center,
@@ -115,7 +119,11 @@ class _PdfScreenState extends State<PdfScreen> {
                             pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 2", textAlign: pw.TextAlign.center),
-                              pw.Image(image2),
+                              pw.Container(
+                                width: 150,
+                                height:300,
+                                child:pw.Image(image2),
+                              ),
                               pw.Text(
                                 "Empty lorry/container with vehicle number",
                                 textAlign: pw.TextAlign.center,
@@ -129,7 +137,11 @@ class _PdfScreenState extends State<PdfScreen> {
                             pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 3", textAlign: pw.TextAlign.center),
-                              pw.Image(image3),
+                              pw.Container(
+                                width: 150,
+                                height:300,
+                                child:pw.Image(image3),
+                              ),
                               pw.Text(
                                 "Stage where half of the loading is completed",
                                 textAlign: pw.TextAlign.center,
@@ -145,7 +157,11 @@ class _PdfScreenState extends State<PdfScreen> {
                             pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 4", textAlign: pw.TextAlign.center),
-                              pw.Image(image4),
+                              pw.Container(
+                                width: 150,
+                                height:300,
+                                child:pw.Image(image4),
+                              ),
                               pw.Text(
                                 "Stage where the loading is 100% completed",
                                 textAlign: pw.TextAlign.center,
@@ -159,7 +175,11 @@ class _PdfScreenState extends State<PdfScreen> {
                             pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 5", textAlign: pw.TextAlign.center),
-                              pw.Image(image5),
+                              pw.Container(
+                                width: 150,
+                                height:300,
+                                child:pw.Image(image5),
+                              ),
                               pw.Text(
                                 "Doors are closed",
                                 textAlign: pw.TextAlign.center,
@@ -173,7 +193,11 @@ class _PdfScreenState extends State<PdfScreen> {
                             pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 6", textAlign: pw.TextAlign.center),
-                              pw.Image(image6),
+                              pw.Container(
+                                width: 150,
+                                height:300,
+                                child:pw.Image(image6),
+                              ),
                               pw.Text(
                                 "Security guard is putting the ISO certified seal",
                                 textAlign: pw.TextAlign.center,
@@ -189,7 +213,11 @@ class _PdfScreenState extends State<PdfScreen> {
                             pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text("STEP 7", textAlign: pw.TextAlign.center),
-                              pw.Image(image7),
+                              pw.Container(
+                                width: 150,
+                                height:300,
+                                child:pw.Image(image7),
+                              ),
                               pw.Text(
                                 "Picture of the seal with the seal number",
                                 textAlign: pw.TextAlign.center,
@@ -221,7 +249,7 @@ class _PdfScreenState extends State<PdfScreen> {
       Directory? documentDirectory = await getExternalStorageDirectory();
       print(documentDirectory!.path);
       String documentPath = "";
-      String newPath ="";
+      //String newPath ="";
       /*List<String>folders = documentDirectory.path.split("/");
       for(int x = 1;x<folders.length;x++){
         String folder = folders[x];
