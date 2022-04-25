@@ -4,12 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfScreen extends StatefulWidget {
+  String pdfFile;
+
+   PdfScreen({
+    Key? key,
+    required this.pdfFile,
+}) :super(key: key);
   @override
   _PdfScreenState createState() => _PdfScreenState();
 }
 
 class _PdfScreenState extends State<PdfScreen> {
-  String pdfFile = '';
+
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +24,20 @@ class _PdfScreenState extends State<PdfScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Visibility(
-              visible: pdfFile.isNotEmpty,
-              child: SfPdfViewer.file(File(pdfFile),
-                  canShowScrollHead: false, canShowScrollStatus: false),
+            Expanded(
+              child: Visibility(
+                visible: widget.pdfFile.isNotEmpty,
+                child: SfPdfViewer.file(File(widget.pdfFile),
+                    canShowScrollHead: false, canShowScrollStatus: false),
+              ),
             ),
-            TextButton(
-                onPressed: () {
-                },
-                child: Text('Create a Pdf')),
+            // TextButton(
+            //     onPressed: () async {
+            //       Navigator.pop(context,true);
+            //       // await createPdfFile();
+            //       // savePdfFile();
+            //     },
+            //     child: Text('Create a Pdf')),
           ],
         ),
       ),
