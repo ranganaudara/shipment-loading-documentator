@@ -15,7 +15,7 @@
 
 
     <application
-        android:label="loading_recorder_app"
+        android:label="Shipment Loading"
         android:name="${applicationName}"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
