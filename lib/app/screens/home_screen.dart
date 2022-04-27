@@ -45,6 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     dateInputController.text = ""; //set the initial value of text field
+    _requestPermission(Permission.manageExternalStorage);
+    _requestPermission(Permission.camera);
+    _requestPermission(Permission.mediaLibrary);
+
     super.initState();
   }
 
@@ -84,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     constraints:
-                        BoxConstraints(maxWidth: displayWidth(context) * 0.2),
+                        BoxConstraints(maxWidth: displayWidth(context) * 0.3),
                     labelText: "Date",
                     hintText: 'Enter the Date',
                   ),
@@ -116,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   controller: vehicleIdController,
                   decoration: InputDecoration(
                     constraints:
-                        BoxConstraints(maxWidth: displayWidth(context) * 0.2),
+                        BoxConstraints(maxWidth: displayWidth(context) * 0.3),
                     border: OutlineInputBorder(),
                     labelText: 'Vehicle Number',
                     hintText: 'Enter the Vehicle Number',
