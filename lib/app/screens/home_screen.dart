@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     DateTime? pickedDate = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
+                        firstDate: DateTime(2018),
                         lastDate: DateTime(2101));
 
                     if (pickedDate != null) {
@@ -184,8 +184,8 @@ class _HomeScreenState extends State<HomeScreen> {
       print(imagePath6.toString());
       print(imagePath7.toString());
       await createPdfFile();
-      savePdfFile();
-      await Navigator.push(
+      await savePdfFile();
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => PdfScreen(pdfFile:pdfFile),)
       );
